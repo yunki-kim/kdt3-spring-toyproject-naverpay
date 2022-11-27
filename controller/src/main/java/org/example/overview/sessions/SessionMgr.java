@@ -2,28 +2,12 @@ package org.example.overview.sessions;
 
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Component
 public class SessionMgr {
-//    private static SessionMgr session = null;
 
-    private SessionMgr() {}
-
-//    public static SessionMgr getInstance() {
-//        if (session == null) {
-//            session = new SessionMgr();
-//        }
-//        return session;
-//    }
-
-    public void create(HttpSession session, String value) {
-        if (session.getAttribute("SESSION_ID") == null) {
-            session.setMaxInactiveInterval(1800); // 30분
-            session.setAttribute("SESSION_ID", value);
-        }
+    private SessionMgr() {
     }
 
     public void create(HttpSession session, String name, String value) {
@@ -33,27 +17,26 @@ public class SessionMgr {
         }
     }
 
-    public void set(HttpSession session, String name, String value) {
-        session.setAttribute(name, value);
+    public void createuIdInSession(HttpSession session, String value) {
+        if (session.getAttribute("SESSION_ID") == null) {
+            session.setMaxInactiveInterval(1800); // 30분
+            session.setAttribute("SESSION_ID", value);
+        }
     }
 
-    public void set(HttpSession session, String value) {
-        session.setAttribute("SESSION_ID", value);
+    public void set(HttpSession session, String name, String value) {
+        session.setAttribute(name, value);
     }
 
     public String get(HttpSession session, String name) {
         return (String) session.getAttribute(name);
     }
 
-    public String get(HttpSession session) {
+    public String getuIdInSession(HttpSession session) {
         if (session.getAttribute("SESSION_ID") != null) {
             return (String) session.getAttribute("SESSION_ID");
         }
         return null;
-    }
-
-    public void delete(HttpSession session) {
-        delete(session, "SESSION_ID");
     }
 
     public void delete(HttpSession session, String name) {
@@ -61,5 +44,9 @@ public class SessionMgr {
             session.removeAttribute(name);
         }
         session.invalidate();
+    }
+
+    public void delete(HttpSession session) {
+        delete(session, "SESSION_ID");
     }
 }
